@@ -5,10 +5,13 @@
 </p>
 
 <p align="center">
- Terra : Recon tool on Social Media Networks.
+ Terra : Social Media OSINT tool.
 </p>
 
-### Recon Available on :
+
+Terra-X is a fork from the original Terra, which largely aims to fix typos found in the original program.
+
+### Usable on :
 
 
 <p>
@@ -36,13 +39,21 @@ $ cd terra
 ### Requirements :
 
 
-For requirements run following commands:
+For requirements run following command:
 
 
 ```
 $ python3 -m pip install -r requirements.txt
 ```
 
+**For those who can't run terra after the recent commit**
+
+##### Change your creds in creds.yml file
+
+```
+username: "username"
+password: "password"
+```
 
 #### Note
 
@@ -187,11 +198,3 @@ Instagram Private API :  https://github.com/ping/instagram_private_api
 
 **Terra is no longer an active project. I am looking for maintainers.**
 
-**For those who can't run terra after the recent commit**
-
-##### Change your creds in creds.yml file
-
-```
-username: "username"
-password: "password"
-```
