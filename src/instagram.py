@@ -3,6 +3,11 @@ Descritption : Terra 2021 instagram module
 Date : 12-May-2021
 Author : Adhrit (github.com/xadhrit/terra)
 
+Terra-X features gramatical fixes for Terra
+by anonfoxer2
+github.com/anonfoxer2
+@owlpilled
+
 """
 
 
@@ -54,7 +59,7 @@ class Instagram:
     def load_message(self):
         # logging message should be displaying
         
-        login_message = "Attempting to Login :) "
+        login_message = "Attempting to login... "
         print(" ")
         pc.print(login_message, style='sea_green1')
         print(" ")
@@ -109,7 +114,7 @@ class Instagram:
         except (ClientCookieExpiredError, ClientLoginRequiredError) as e:
             print(" ")
             pc.print("ClientCookieExpiredError/ClientLoginRequiredError {}".format(e), style="red")
-            pc.print("Please re-check credentials again in ./creds/insta.yml file :) ", style='orange1')   
+            pc.print("Please check credentials again in ./creds/insta.yml file, or delete settings.json ", style='orange1')   
             # login exired
             # login again
             self.api = AppClient(auto_patch=True, authentication=True, username=user,password=passwd, on_login=lambda x: self.on_login_callback(x, settings_file))
@@ -119,14 +124,14 @@ class Instagram:
             pc.print(e['message'], style="red")
             pc.print(err.msg, style="red")
             print("\n")
-            if 'challenage' in e:
+            if 'challenge' in e:
                 print("Please follow link to complete the challange " + e['challange']['url'])
             exit(9)
             
     def to_json(self, python_object):
         if isinstance(python_object, bytes):
             return {'__class__' : 'bytes', '__value__': codecs.encode(python_object, 'base64').decode()}
-        raise TypeError(repr(python_object) + 'could not change into json.')
+        raise TypeError(repr(python_object) + 'could not format into json.')
     
     def from_json(self, json_object):
         if '__class__' in json_object and json_object['__class__'] == 'bytes':
@@ -161,7 +166,7 @@ class Instagram:
             elif 'error_title' in e:
                 pc.print(e['error_title'], style="red")
             elif 'challenge' in e:
-                pc.print("Please follow this link to complete " + e['challenge']['url'])
+                pc.print("Please follow this link to complete challenge " + e['challenge']['url'])
                 
             sys.exit(2)
     
@@ -209,14 +214,14 @@ class Instagram:
     
     def check_private_profile(self):
         if self.is_private and not self.following:
-            pc.print("User got a private Account\n", style="red")
-            pc.print("You can send a follow request.. Want me to send it for you!? [y/n] \n ")
+            pc.print("User has a private account\n", style="red")
+            pc.print("You can send a follow request. Would you like Terra-X to send one? [y/n] \n ")
             
             request = input()
             
             if request.lower() == "y":
                 self.api.friendships_create(self.target_id)
-                pc.print("Done!")
+                pc.print("Sending friend request...")
             return True
         return False
         
@@ -285,7 +290,7 @@ class Instagram:
                     
             print(t)
         else:
-            pc.print("It seems like user haven't pinned any location until now.", style="red")
+            pc.print("Unable to find any pinned locations", style="red")
             
      
     def __getFeed__(self):
@@ -324,18 +329,18 @@ class Instagram:
         pc.print(" | id :  ", style='cyan', end='')
         pc.print(str(self.target_id) , style='bright_white')
         if self.is_private:
-            pc.print("Target have Private Profile", style="salmon1")
+            pc.print("Target has private profile", style="salmon1")
         if self.following:
             pc.print("Following", style="orange1")
         else:
-            pc.print("You are not Following {}'s Account ".format(self.target), style="red")
+            pc.print("You are not following {}'s account ".format(self.target), style="red")
         print("\n") 
 
     def __getCaptions__(self):
         if self.check_private_profile():
             return
 
-        pc.print("Filtering Target's Captions... \n", ":thumbs_up:")
+        pc.print("Filtering target's captions... \n", ":thumbs_up:")
         captions = []
 
         data = self.__getFeed__()
@@ -380,14 +385,14 @@ class Instagram:
                     json.dump(caption_data, f)
 
         else:
-            pc.print("Sorry! No Captions Found : \n", style="red")
+            pc.print("No captions found \n", style="red")
 
         return
     
     def _all_comments(self):
         if self.check_private_profile():
             return
-        pc.print("Searching for target's all comments...\n")
+        pc.print("Searching for comments on  target's profile...\n")
         
         comments_count = 0
         posts = 0
@@ -482,7 +487,7 @@ class Instagram:
         if self.check_private_profile():
             return
         
-        pc.print("Searching for target's following....\n", style="cyan")
+        pc.print("Searching for accounts the target follows...\n", style="cyan")
         
         get_followings = []
         followings = []
@@ -494,7 +499,7 @@ class Instagram:
         
         next_max_id = data.get('next_max_id')
         while next_max_id:
-            sys.stdout.write('\r Find %i followings' %len(get_followings))
+            sys.stdout.write('\r Found %i accounts' %len(get_followings))
             sys.stdout.flush()
             results = self.api.user_following(str(self.target_id), rank_token=rank_token, max_id=next_max_id)
             
@@ -613,7 +618,7 @@ class Instagram:
                     json.dump(json_data, fp)
         
         else:
-            pc.print("Sorry! We can not found any results.\n", style="red")                 
+            pc.print("Sorry! No results found.\n", style="red")                 
     
     def _user_timeline(self):
         try:
@@ -712,7 +717,7 @@ class Instagram:
         
         except ClientError as err:
             pc.print(err, style="red") 
-            print(str(self.target) + " not exist, please enter a valid username.")
+            print(str(self.target) + " does not exist, please enter a valid username.")
             print('\n') 
             exit(2) 
             
@@ -753,7 +758,7 @@ class Instagram:
     def _media_type(self):
         if self.check_private_profile():
             return
-        pc.print("Searching for target captions...\n")
+        pc.print("Searching for target post captions...\n")
         
         num = 0
         photo_num = 0
@@ -794,7 +799,7 @@ class Instagram:
                     json.dump(json_data, fp)
                     
         else:
-            pc.print("No Results Found \n", style="red")
+            pc.print("No results found \n", style="red")
             
             
     def _people_who_commented(self):
@@ -858,7 +863,7 @@ class Instagram:
                 
                 
         else:
-            pc.print("No Users Found! \n", style="red")        
+            pc.print("No users found! \n", style="red")        
             
     def _users_who_tagged(self):
         if self.check_private_profile():
